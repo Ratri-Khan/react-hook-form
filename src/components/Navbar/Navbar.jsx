@@ -1,10 +1,19 @@
-import React from "react";
+import React, { useContext } from "react";
 import { FaUserCircle } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../providers/AuthProviders";
 
 const Navbar = () => {
+    const { user, logOut } = useContext(AuthContext);
+    const handleLogout = () => {
+      logOut()
+        .then(() => {})
+        .then((error) => {
+          console.log(error);
+        });
+    };
   return (
-    <div className="navbar bg-slate-900 text-slate-400">
+    <div className="navbar bg-violet-200 text-slate-700 font-bold">
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -28,25 +37,14 @@ const Navbar = () => {
             className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
           >
             <li>
-              <a>Item 1</a>
-            </li>
-            <li>
-              <a>Parent</a>
-              <ul className="p-2">
-                <li>
-                  <a>Submenu 1</a>
-                </li>
-                <li>
-                  <a>Submenu 2</a>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <a>Item 3</a>
-            </li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/secret">Secret</Link>
+          </li>
           </ul>
         </div>
-        <a className="btn btn-ghost text-xl">daisyUI</a>
+        <a className="btn btn-ghost text-xl">Form</a>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
@@ -58,11 +56,27 @@ const Navbar = () => {
           </li>
         </ul>
       </div>
-      <div className="navbar-end text-4xl">
-        <Link to="/login">
-        <FaUserCircle />
-        </Link>
-        
+      <div className="navbar-end">
+        {user ? (
+          <div
+            onClick={handleLogout}
+            className="mx-6 flex flex-col  justify-center items-center cursor-pointer"
+          >
+            <img
+              src={user.photoURL}
+              alt=""
+              className="h-[60px] w-[60px] border border-white rounded-full"
+            />
+            <p className="text-xs"> logout</p>
+          </div>
+        ) : (
+          <Link to="/login">
+            <div className="mx-6 flex flex-col  justify-center items-center">
+              <FaUserCircle className="text-3xl" />
+              <p className="text-xs"> Account</p>
+            </div>
+          </Link>
+        )}
       </div>
     </div>
   );

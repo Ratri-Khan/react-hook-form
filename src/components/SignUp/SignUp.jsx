@@ -36,18 +36,21 @@ const SignUp = () => {
           updateUserProfile(data.name, res.data.url).then(() => {
             reset();
             navigate(from, { replace: true })
+          })
+          .catch((error) => {
+            console.error("Error updating user profile:", error);
+            setError("An error occurred while updating the user profile.");
           });
-        });
+        })
+        .catch((error) => {
+            console.error("Error creating user:", error);
+            if (error.message === "Firebase: Error (auth/email-already-in-use).") {
+              setError(
+                "This email already has an account, please sign up with a unique email."
+              );
+            }
+          });
       })
-
-      .catch((error) => {
-        console.error("Error creating user:", error);
-        if (error.message === "Firebase: Error (auth/email-already-in-use).") {
-          setError(
-            "This email already has an account, please sign up with a unique email."
-          );
-        }
-      });
   };
 
   return (
@@ -117,7 +120,7 @@ const SignUp = () => {
               )}
             </div>
             <div>
-              <p className="font-bold text-xs text-slate-300">{error}</p>
+              <p className="font-bold text-xs text-yellow-500">{error}</p>
             </div>
             <div className="form-control mt-6">
               <button className="inputBox">Sign Up</button>

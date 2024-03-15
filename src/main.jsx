@@ -9,6 +9,7 @@ import Login from "./components/Login/Login.jsx";
 import Secret from "./components/Secret/Secret.jsx";
 import AuthProvider from "./providers/AuthProviders.jsx";
 import SignUp from "./components/SignUp/SignUp.jsx";
+import PrivateRoute from "./PrivateRoute/PrivateRoute.jsx";
 
 const router = createBrowserRouter([
   {
@@ -29,7 +30,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/secret",
-        element: <Secret></Secret>,
+        element: <PrivateRoute><Secret></Secret></PrivateRoute>,
       },
     ],
   },
